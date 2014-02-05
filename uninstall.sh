@@ -29,6 +29,11 @@ get_pkg_path()
 	echo $path
 }
 
+forget_pkg()
+{
+	pkgutil --forget ${1} > /dev/null 2>&1
+}
+
 remove_files()
 {
 	local vol=$(get_pkg_vol ${1})
@@ -50,18 +55,18 @@ remove_files()
 	case "${1}" in 
 		"org.wireshark.ChmodBPF.pkg")
 			rm -rf "${vol}${path}/ChmodBPF"
-			pkgutil --forget ${1} > /dev/null 2>&1
+			forget_pkg ${1}
 			;;
 		"org.wireshark.cli.pkg")
 			local bin
 			for bin in "${bins[@]}"; do 
 				rm -f "${vol}${path}${bin}"
 			done
-			pkgutil --forget ${1} > /dev/null 2>&1
+			forget_pkg ${1}
 			;;
 		"org.wireshark.Wireshark.pkg")
 			rm -rf "${vol}${path}/Wireshark.app"
-			pkgutil --forget ${1} > /dev/null 2>&1
+			forget_pkg ${1}
 			;;
 	esac
 }
